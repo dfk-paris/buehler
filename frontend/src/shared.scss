@@ -1,0 +1,139 @@
+a {
+  cursor: pointer;
+}
+
+register {
+  a {
+    margin-right: 10px;
+  }
+}
+
+watchlist-nav {
+  margin-left: -5px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  a {
+    margin-bottom: 1rem;
+
+    dfk-icon {
+      margin-top: 0px;
+    }
+  }
+
+  a.clear {
+    dfk-icon {
+      color: $tag-gray;
+    }
+  }
+}
+
+.instruction {
+  dfk-icon {
+    vertical-align: middle;
+    color: #ababab;
+  }
+}
+
+[is=wikidata-fly-in] {
+  h2 {
+    margin-top: 2em;
+  }
+
+  a {
+    cursor: pointer;
+  }
+}
+
+[is='search-result'] {
+  position: relative;
+}
+
+watchlist-toggle {
+  display: inline-block;
+  position: absolute;
+  left: -55px;
+  top: 13px;
+}
+
+[is=popup] {
+  &.open {
+    width: 60vw;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+  }
+
+  .header {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .controls {
+      margin-top: 35px;
+      margin-right: -45px;
+      display: flex;
+      justify-content: end;
+      align-items: start;
+      font-size: 0.8em;
+
+      a {
+        display: flex;
+        justify-content: end;
+        margin-left: 1.5em;
+        text-decoration: none;
+
+        dfk-icon {
+          width: 20px;
+          margin-top: 3px;
+          margin-right: 1em;
+
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+
+      a:nth-child(1) {
+        width: 160px;
+      }
+
+      a:nth-child(2) {
+        width: 100px;
+      }
+
+      a:nth-child(3) {
+        width: 80px;
+      }
+    }
+  }
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+
+    width: 60vw;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  100% {
+    opacity: 0;
+
+    width: 60vw;
+    height: auto;
+    overflow-y: auto;
+    box-shadow: none;
+  }
+}

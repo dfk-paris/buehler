@@ -1,0 +1,52 @@
+<search-result>
+  <watchlist-toggle id={props.record['babue_id']} class="no-print" />
+
+  <span class="fw-bold pr-3">{artist()}&nbsp;</span>{lifespan()}
+
+  <div class="my-3">
+    Bestellnummer: {props.record['babue_id']}
+  </div>
+
+  <dfk-authority-link
+    label="Suche in den Datenangeboten des DFK Paris: "
+    omit-id-prefix="true"
+    type="dfk"
+    linkify-id={true}
+    id={props.record['dfk_id']}
+    class="d-block"
+  />
+
+  <dfk-authority-link
+    label="Die Person in Wikidata: "
+    omit-id-prefix="true"
+    type="wikidata"
+    linkify-id={true}
+    id={props.record['Wikidata ID']}
+    class="d-block"
+  />
+
+  <script>
+    import WatchlistToggle from './watchlist_toggle.riot'
+    import DfkAuthorityLink from '@dfk-paris/frontend/src/components/authority_link.riot'
+
+    export default class {
+      static components = {DfkAuthorityLink, WatchlistToggle}
+
+      artist() {
+        const m = this.match()
+
+        return m ? m[1] : this.props.record['Name']
+      }
+
+      lifespan() {
+        const m = this.match()
+
+        return m ? m[2] : null
+      }
+
+      match() {
+        return this.props.record['Name'].match(/^([^\(]+)(\([\d-]+\))$/)
+      }
+    }
+  </script>
+</search-result>

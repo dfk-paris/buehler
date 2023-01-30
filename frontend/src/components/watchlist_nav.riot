@@ -1,0 +1,46 @@
+<watchlist-nav>
+  <template if={count() > 0}>
+    <a
+      onclick={event => open(event)}
+      class="open d-flex"
+    >
+      <dfk-icon type="align-left" class="mr-2" />
+      Bestellung<br />ansehen&nbsp;({count()})
+    </a>
+
+    <a
+      onclick={event => clear(event)}
+      class="clear d-flex"
+    >
+      <dfk-icon type="align-left" class="mr-2" />
+      Liste<br />leeren
+    </a>
+  </template>
+
+  <script>
+    import DfkIcon from '@dfk-paris/frontend/src/components/icon.riot'
+    import watchlist from '../lib/watchlist'
+
+    export default class {
+      static components = {
+        DfkIcon
+      }
+
+      onBeforeMount() {
+        this.on('watchlist-changed', event => this.update())
+      }
+
+      count() {
+        return watchlist.count()
+      }
+
+      open(event) {
+        this.props.onOpen(event)
+      }
+
+      clear(event) {
+        this.props.onClear(event)
+      }
+    }
+  </script>
+</watchlist-nav>

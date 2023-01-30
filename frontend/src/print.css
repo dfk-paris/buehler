@@ -1,0 +1,45 @@
+// a.close-button,
+// watchlist-toggle,
+// .controls {
+//   display: none;
+// }
+.no-print {
+  display: none;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+body {
+  padding: 30px;
+}
+
+h1 {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+  border-bottom: 1px solid gray;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+li:last-child {
+  border-bottom-width: 0;
+}
+
+dfk-authority-link {
+  display: block;
+}

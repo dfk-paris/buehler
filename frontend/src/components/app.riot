@@ -1,0 +1,155 @@
+<app>
+  <div class="d-flex">
+    <div class="w-40 pr-7">
+      <dfk-input
+        placeholder="Suche ..."
+        type="text"
+        name="artist"
+        update-handler={onDelayedInput}
+        value={state.criteria.artist}
+        help={searchHelp()}
+        help-button={true}
+      />
+
+      <div class="d-flex justify-content-start mt-4">
+        <watchlist-nav
+          on-open={event => openWatchlist(event)}
+          on-clear={event => clearWatchlist(event)}
+        />
+      </div>
+
+      <div class="mt-5">&nbsp;</div>
+    </div>
+    <div class="w-60">
+      <template if={state.records}>
+        <register
+          aggregation={state.aggs.letters}
+          value={state.criteria.letter}
+          on-change={onInput}
+          class="dfk-sans-serif"
+        />
+
+        <div class="my-4">{state.total} {resultsLabel()}</div>
+
+        <dfk-pagination
+          class="mt-3 pb-3 border-bottom justify-content-start"
+          page={state.criteria.page}
+          total={state.total}
+          per-page={20}
+          page-to={onInput}
+          first-label={t('first_page')}
+          previous-label={t('prev_page')}
+          next-label={t('next_page')}
+          last-label={t('last_page')}
+        />
+
+        <ul class="list-unstyled">
+          <li
+            each={record in state.records}
+            record={record}
+            is="search-result"
+            class="py-3 border-bottom dfk-sans-serif"
+            watchlist-toggle={true}
+          ></li>
+        </ul>
+      </template>
+    </div>
+  </div>
+
+  <buehler-popup
+    open={state.watchlistOpen}
+    on-close={event => closeWatchlist(event)}>
+  </bueler-popup>
+
+  <script>
+    import {i18n, Url} from '@wendig/lib'
+
+    import search from '../lib/search'
+    import watchlist from '../lib/watchlist'
+
+    import {UrlSearch, params} from '@dfk-paris/frontend/src/lib/url_search'
+    import DfkInput from '@dfk-paris/frontend/src/components/input.riot'
+    import DfkPagination from '@dfk-paris/frontend/src/components/pagination.riot'
+
+    import Register from './register.riot'
+    import WatchlistNav from './watchlist_nav.riot'
+    import Popup from './popup.riot'
+    import SearchResult from './search_result.riot'
+
+    export default class {
+      static components = {
+        'buehler-popup': Popup,
+        DfkInput,
+        DfkPagination,
+        Register,
+        SearchResult,
+        WatchlistNav
+      }
+
+      constructor() {
+        this.urlSearch = new UrlSearch(this)
+        this.i18n = i18n
+      }
+
+      onBeforeMount(props, state) {
+        this.state = {
+          watchlistOpen: false
+        }
+
+        this.urlSearch.setup()
+      }
+
+      onUnmounted() {
+        this.urlSearch.teardown()
+      }
+
+      onSearch(p) {
+        p['letter'] = p['letter'] || 'a'
+
+        search.query(p).then(data => {
+          console.log(data)
+          this.update({
+            records: data.results,
+            aggs: data.aggs,
+            total: data.total
+          })
+        })
+      }
+
+      resultsLabel() {
+        return (
+          this.state && this.state.total == 1 ?
+          i18n.translate('result') :
+          i18n.translate('results')
+        )
+      }
+
+      searchHelp() {
+        return [
+          'Im Suchschlitz können der Name oder die Wikidata-Entitätsnummer',
+          '(z. B. Q1234) eingegeben werden. Um zwei zusammengehörige Begriffe',
+          '(meist Vor‑ und Nachname) zu suchen, ist ein »+« zwischen dem ersten',
+          'und dem zweiten Begriff anzugeben (Beispiel: Dieterle +Marie).'
+        ].join(' ')
+      }
+
+      openWatchlist(event) {
+        event.preventDefault()
+
+        this.update({watchlistOpen: true})
+      }
+
+      clearWatchlist(event) {
+        event.preventDefault()
+
+        watchlist.clear()
+      }
+
+      closeWatchlist(event) {
+        event.preventDefault()
+
+        this.update({watchlistOpen: false})
+      }
+    }
+  </script>
+</app>

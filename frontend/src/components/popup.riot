@@ -1,0 +1,150 @@
+<buehler-popup>
+  <div is="popup" open={props.open}>
+    <a onclick={event => close(event)} class="close-button no-print">
+      <dfk-icon type="cross" />
+    </a>
+
+    <div class="p-7">
+      <div class="header">
+        <h1>Bestellung</h1>
+        <div class="controls no-print">
+          <a href={email()}>
+            <dfk-icon type="email" />
+            als Email versenden an
+            {address()}
+          </a>
+          <a onclick={event => print(event)}>
+            <dfk-icon type="print" />
+            Ausdrucken als PDF
+          </a>
+          <a onclick={event => clear(event)}>
+            <dfk-icon type="cross" />
+            Liste leeren
+          </a>
+        </div>
+      </div>
+
+      <ul class="list-unstyled">
+        <li
+          each={record in state.records}
+          record={record}
+          is="search-result"
+          class="py-3 border-bottom dfk-sans-serif"
+        ></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    import {util} from '@wendig/lib'
+
+    import search from '../lib/search'
+    import watchlist from '../lib/watchlist'
+
+    import DfkPopup from '@dfk-paris/frontend/src/components/popup.riot'
+    import DfkIcon from '@dfk-paris/frontend/src/components/icon.riot'
+    import SearchResult from './search_result.riot'
+
+    export default class {
+      static components = {'popup': DfkPopup, DfkIcon, SearchResult}
+
+      constructor() {
+        this.load = this.load.bind(this)
+      }
+
+      onBeforeMount() {
+        this.on('watchlist-changed', this.load)
+
+        this.load()
+        this.loadCss()
+        this.loadEmailTpl()
+      }
+
+      load() {
+        const ids = watchlist.unpack()
+
+        search.byIds(ids).then(data => {
+          this.update({records: data.results})
+        })
+      }
+
+      loadCss() {
+        fetch(staticUrl + '/print.css').then(r => r.text()).then(data => {
+          this.update({printCss: data})
+        })
+      }
+
+      loadEmailTpl() {
+        fetch(staticUrl + '/email.tpl').then(r => r.text()).then(data => {
+          this.update({emailTpl: data})
+        })
+      }
+
+      email() {
+        if (!this.state.emailTpl) return
+        if (!this.state.records) return
+
+        let body = `${this.state.emailTpl}`
+        let items = []
+
+        for (const record of this.state.records) {
+          let item = [
+            record['Name'], "\n",
+            `Bestellnummer: ${record['babue_id']}`, "\n",
+          ]
+
+          if (record['dfk_id']) {
+            item.push(
+              `Suche in den Datenangeboten des DFK Paris: ${record['dfk_id']}\n`
+            )
+          }
+
+          if (record['Wikidata I']) {
+            item.push(
+              `Die Person in Wikidata: ${record['Wikidata I']}\n`
+            )
+          }
+
+          item.push("---\n")
+
+          items.push(item.join(''))
+        }
+
+        body = body.replace('%{ITEMS}', items.join(''))
+        body = encodeURIComponent(body)
+        let subject = encodeURIComponent(this.subject())
+
+        return `mailto:${this.address()}?subject=${subject}&body=${body}`
+      }
+
+      subject() {
+        return 'Bestellung'
+      }
+
+      address() {
+        return 'MAIL@dfk-paris.org'
+      }
+
+      print(event) {
+        event.preventDefault()
+
+        const element = document.querySelector("body > [is=popup]")
+        util.printElement(element, {
+          css: this.state.printCss,
+          print: true
+        })
+      }
+
+      clear(event) {
+        event.preventDefault()
+
+        watchlist.clear()
+        this.close(event)
+      }
+
+      close(event) {
+        this.props.onClose(event)
+      }
+    }
+  </script>
+</buehler-popup>

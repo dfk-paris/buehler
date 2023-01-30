@@ -1,0 +1,32 @@
+<watchlist-toggle>
+  <dfk-input
+    name="bookmark"
+    type="checkbox"
+    class="d-print-none"
+    onclick={event => toggle(event)}
+    value={isOn()}
+  />
+  
+  <script>
+    import DfkInput from '@dfk-paris/frontend/src/components/input.riot'
+    import watchlist from '../lib/watchlist'
+
+    export default class {
+      static components = {
+        'dfk-input': DfkInput
+      }
+
+      onBeforeMount() {
+        this.on('watchlist-changed', event => this.update())
+      }
+
+      isOn() {
+        return watchlist.has(this.props.id)
+      }
+
+      toggle(event) {
+        watchlist.toggle(this.props.id)
+      }
+    }
+  </script>
+</watchlist-toggle>
