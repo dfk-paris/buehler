@@ -18,20 +18,44 @@ const parseTerms = (str) => {
 }
 
 const matchesArtist = (record, artist) => {
-  const regex = new RegExp(util.fold(artist))
-  const name = util.fold(record['Name'])
+  const folded = util.fold(artist)
+  const qid = util.fold(record['Wikidata ID'])
+  if (folded == qid) return true
 
-  return name.match(regex)
+  const regex = new RegExp(folded)
+  const name = util.fold(record['Name'])
+  const lastName = name.split(',')[0]
+  if (lastName.match(regex)) return true
+
+  return false
 }
 
-db.action('register', (data) => {
-  const results = storage.register[data.letter] || []
+const matchesSurname = (record, query) => {
+  let q = util.fold(query)
+  q = new RegExp(q)
 
-  return {
-    letter: data.letter,
-    records: results.slice(0, 20)
-  }
-})
+  const name = util.fold(record['Name'])
+  const lastName = name.split(',')[0]
+
+  return !!lastName.match(q)
+}
+
+const matchesQid = (record, query) => {
+  const q = util.fold(query)
+  const qid = util.fold(record['Wikidata ID'])
+
+  return q == qid
+}
+
+
+// db.action('register', (data) => {
+//   const results = storage.register[data.letter] || []
+
+//   return {
+//     letter: data.letter,
+//     records: results.slice(0, 20)
+//   }
+// })
 
 const query = (data) => {
   let results = storage['records']
@@ -72,15 +96,15 @@ const query = (data) => {
 
   // filter (after aggs)
 
-  results = results.filter(record => {
-    if (c['letter']) {
-      if (c['letter'] != record['letter']) {
-        return false
-      }
-    }
+  // results = results.filter(record => {
+  //   if (c['letter']) {
+  //     if (c['letter'] != record['letter']) {
+  //       return false
+  //     }
+  //   }
 
-    return true
-  })
+  //   return true
+  // })
 
 
   // sort
@@ -95,13 +119,19 @@ const query = (data) => {
   const page = parseInt(c['page'] || '1')
   results = results.slice((page - 1) * perPage, page * perPage)
 
-  // consistency checks
-  if (c['letter'] && !letters[c['letter']]) {
-    // we are selecting for a letter that would yield no results, so we repeat
-    // the search with the first letter that WOULD yield results
-    data['criteria']['letter'] = Object.keys(letters)[0]
-    return query(data)
+  // highlight
+
+  for (const r of results) {
+    r['suggest'] = util.highlight(r['Name'], artist)
   }
+
+  // consistency checks
+  // if (c['letter'] && !letters[c['letter']]) {
+  //   // we are selecting for a letter that would yield no results, so we repeat
+  //   // the search with the first letter that WOULD yield results
+  //   data['criteria']['letter'] = Object.keys(letters)[0]
+  //   return query(data)
+  // }
 
   const response = {
     total,

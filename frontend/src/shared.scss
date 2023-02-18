@@ -1,3 +1,17 @@
+[is='app'] {
+  position: relative;
+  width: 750px;
+  margin: 0 auto;
+
+  // .watchlist-controls {
+  //   position: absolute;
+  //   left: -200px;
+  //   right: -400px;
+  // }
+
+}
+
+
 a {
   cursor: pointer;
 }
@@ -8,18 +22,26 @@ register {
   }
 }
 
+dfk-input[name='search'] {
+  max-width: 300px;
+}
+
 watchlist-nav {
-  margin-left: -5px;
+  margin-left: -2px;
 
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  justify-content: start;
 
   a {
-    margin-bottom: 1rem;
+    margin-right: 2rem;
 
     dfk-icon {
       margin-top: 0px;
+      width: auto !important;
+    }
+
+    .label {
+      width: 80px;
     }
   }
 
@@ -55,7 +77,7 @@ watchlist-toggle {
   display: inline-block;
   position: absolute;
   left: -55px;
-  top: 13px;
+  top: 12px;
 }
 
 [is=popup] {
@@ -135,5 +157,45 @@ watchlist-toggle {
     height: auto;
     overflow-y: auto;
     box-shadow: none;
+  }
+}
+
+live-search {
+  textarea {
+    min-height: 150px;
+  }
+
+  ul {
+    padding-left: 0 !important;
+    box-sizing: border-box;
+    position: absolute;
+    margin-left: 0;
+    margin-top: -1px;
+    z-index: 1000;
+    max-height: 0;
+
+    transition: max-height 0.3s ease-out;
+  }
+
+  ul.show {
+    max-height: 300px;
+    background-color: white;
+    border: 1px solid gray;
+  }
+
+  li {
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+    cursor: pointer;
+
+    mark {
+      background-color: inherit;
+      color: $dfk-green;
+    }
+  }
+
+  li.selected {
+    background-color: #efefef;
   }
 }

@@ -9,12 +9,7 @@ import {i18n, RiotPlugins} from '@wendig/lib'
 
 import search from './lib/search'
 
-import Loading from './components/loading.riot'
-// import WikidataEntities from './components/wikidata_entities.riot'
-// import WikidataCharts from './components/charts.riot'
-// import WikidataFlyIn from './components/fly_in.riot'
 import App from './components/app.riot'
-import FlyIn from '@dfk-paris/frontend/src/components/fly_in.riot'
 import DfkIcon from '@dfk-paris/frontend/src/components/icon.riot'
 
 function defaultLocale() {
@@ -23,7 +18,7 @@ function defaultLocale() {
 
   if (locale) return locale[1] 
 
-  return 'en'
+  return 'de'
 }
 
 i18n.setLocale(defaultLocale())
@@ -38,13 +33,7 @@ i18n.fetch(`${DfkFrontend.config().staticUrl}/translations.json`).then(() => {
   riot.install(BusRiotPlugin)
 
   riot.register('app', App)
-  riot.register('wikidata-loading', Loading)
-  // riot.register('wikidata-entities', WikidataEntities)
-  // riot.register('wikidata-charts', WikidataCharts)
-  // riot.register('wikidata-fly-in', WikidataFlyIn)
-
   riot.register('dfk-icon', DfkIcon)
-  riot.register('fly-in', FlyIn)
 
   riot.mount('[is]')
 

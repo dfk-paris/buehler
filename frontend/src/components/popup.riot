@@ -10,16 +10,15 @@
         <div class="controls no-print">
           <a href={email()}>
             <dfk-icon type="email" />
-            als Email versenden an
-            {address()}
+            {cap(t('send_as_mail'))}
           </a>
           <a onclick={event => print(event)}>
             <dfk-icon type="print" />
-            Ausdrucken als PDF
+            {cap(t('print_pdf'))}
           </a>
           <a onclick={event => clear(event)}>
             <dfk-icon type="cross" />
-            Liste leeren
+            {cap(t('empty_list'))}
           </a>
         </div>
       </div>
