@@ -67,8 +67,3 @@ your page:
 ```
 
 The component `app` can be placed anywhere in your page.
-
-# Data
-
-After making changes to `data/records.csv`, run `npm run import` to convert the
-data to a suitable json format that the app can consume.
