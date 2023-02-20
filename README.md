@@ -66,10 +66,9 @@ your page:
 </html>
 ```
 
-The two component `app` can be placed anywhere in your page.
+The component `app` can be placed anywhere in your page.
 
 # Data
 
-After making changes to `data/records.csv`, which is the source of data for the
-person data, run `npm run import` to convert the data to a suitable json format
-that the app can consume.
+After making changes to `data/records.csv`, run `npm run import` to convert the
+data to a suitable json format that the app can consume.
