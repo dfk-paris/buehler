@@ -1,10 +1,12 @@
-# DFK Wikidata Entities
+# Bildarchiv Bühler
 
 TODO: description
 
 # Data
 
-TODO
+All data relevant for the app is contained within the `data/` directory. With
+the `npm run import` task, it is transformed to JSON for direct consumption by
+the app.
 
 # Development
 
