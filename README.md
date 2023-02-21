@@ -1,6 +1,8 @@
 # Bildarchiv Bühler
 
-TODO: description
+The repository contains the source code and data of a web app embedded on the DFK Paris website ([Bildarchiv Heinz-Peter Bühler](https://dfk-paris.org/de/page/bildarchiv-hans-peter-buehler-3379.html)). The web app is based on the [DFK frontend library](https://github.com/dfk-paris/frontend).
+
+The app allows the user to search for analog archival material and prepare an order. 
 
 # Data
 
