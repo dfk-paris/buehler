@@ -4,6 +4,7 @@ export APP_ENV=production
 export STATIC_URL="https://static.dfkg.org/buehler"
 export USE_SSL="true"
 
+npm run import
 npm run build
 
 rsync -av \
