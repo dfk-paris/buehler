@@ -6,7 +6,7 @@
 
     <div class="p-7">
       <div class="header">
-        <h1>Bestellung</h1>
+        <h1>{cap(t('order'))}</h1>
         <div class="controls no-print">
           <a href={email()}>
             <dfk-icon type="email" />
@@ -121,7 +121,7 @@
       }
 
       address() {
-        return 'MAIL@dfk-paris.org'
+        return this.t('order_address')
       }
 
       print(event) {

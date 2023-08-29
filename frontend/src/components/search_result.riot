@@ -4,7 +4,7 @@
   <span class="fw-bold pr-3">{artist()}&nbsp;</span>{lifespan()}
 
   <div class="my-3">
-    Bestellnummer: {props.record['babue_id']}
+    {cap(t('record_id'))}: {props.record['babue_id']}
   </div>
 
   <dfk-authority-link
