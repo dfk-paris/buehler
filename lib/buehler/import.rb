@@ -31,6 +31,8 @@ class Buehler::Import
         record['dfk_id'] = dp['dfk_id']
       end
 
+      record['letter'] = record['Name'][0].downcase
+
       records << record
     end
 

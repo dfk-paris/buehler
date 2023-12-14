@@ -50,6 +50,8 @@ class Search {
   }
 
   query(criteria) {
+    criteria['per_page'] = criteria['per_page'] || 10
+
     return this.postMessage({action: 'query', criteria})
   }
 

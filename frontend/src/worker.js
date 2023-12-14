@@ -94,17 +94,18 @@ const query = (data) => {
     letters[l] += 1
   }
 
+
   // filter (after aggs)
 
-  // results = results.filter(record => {
-  //   if (c['letter']) {
-  //     if (c['letter'] != record['letter']) {
-  //       return false
-  //     }
-  //   }
+  results = results.filter(record => {
+    if (c['letter']) {
+      if (c['letter'] != record['letter']) {
+        return false
+      }
+    }
 
-  //   return true
-  // })
+    return true
+  })
 
 
   // sort
@@ -166,7 +167,7 @@ const init = (locale) => {
     data = enrich(data)
     storage['records'] = data
 
-    console.log(storage)
+    // console.log(storage)
     db.loaded()
   })
 }
