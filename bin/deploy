@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 export APP_ENV=production
-export STATIC_URL="https://static.dfkg.org/buehler"
+export STATIC_URL="https://static.dfk-paris.org/buehler"
 export USE_SSL="true"
 
 npm run import

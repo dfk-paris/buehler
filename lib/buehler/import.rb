@@ -79,7 +79,7 @@ class Buehler::Import
 
     def dfk_persons
       @dfk_persons ||= begin
-        response = Faraday.get('https://static.dfkg.org/dfk_persons/entities.json')
+        response = Faraday.get('https://static.dfk-paris.org/dfk_persons/entities.json')
         data = JSON.parse(response.body)
 
         lookup = {}
