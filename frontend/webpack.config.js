@@ -29,11 +29,13 @@ module.exports = (env, argv) => {
       compress: true,
       port: 4000,
       hot: false,
-      https: useSsl,
       headers: {
         'ACCESS-CONTROL-ALLOW-ORIGIN': 'https://dfk-paris.org'
       },
       client: {
+        overlay : {
+          warnings: false
+        },
         webSocketURL: `${process.env.STATIC_URL}/ws`,
       },
     },
@@ -76,6 +78,9 @@ module.exports = (env, argv) => {
           ]
         }, {
           test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false,
+          },
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
